@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ui_multicaixa/src/pages/intro_view/intro_view.dart';
 import 'package:ui_multicaixa/src/pages/splash-page.dart';
 import 'package:ui_multicaixa/src/utils/consts.dart';
 
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light().copyWith(
         primaryColor: PRIMARY_COLOR
       ),
-      home: SplashPage(),
+      home: IntroView(),
     );
   }
 }

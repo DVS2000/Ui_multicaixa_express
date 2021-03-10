@@ -24,7 +24,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   font_awesome_flutter: ^8.7.0
-  flutter_circular_chart: ^0.1.0
   get_it: ^5.0.1
   mobx:
   flutter_mobx:

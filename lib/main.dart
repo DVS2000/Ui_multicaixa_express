@@ -32,11 +32,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "UI Muilticaixa-Express",
+      title: "Project Teste",
       theme: ThemeData.light().copyWith(
         primaryColor: PRIMARY_COLOR
       ),
-      home: HomePage(),
+      home: IntroView(),
     );
   }
 }

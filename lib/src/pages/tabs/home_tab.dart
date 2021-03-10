@@ -142,7 +142,9 @@ class _HomeTabState extends State<HomeTab> {
                 shrinkWrap: true,
                 children: trancoes1
                     .map((item) => SharedWidget.itemTransaction(
-                        size: size, transacao: item))
+                      size: size, transacao: item
+                      )
+                    )
                     .toList(),
               ),
             )

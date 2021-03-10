@@ -9,9 +9,9 @@
 import 'package:flutter/material.dart';
 import 'package:ui_multicaixa/src/utils/consts.dart';
 import 'package:ui_multicaixa/src/utils/navigator_util.dart';
-//import 'package:ui_multicaixa/src/utils/size_utils.dart';
+import 'package:ui_multicaixa/src/utils/size_utils.dart';
 import 'package:ui_multicaixa/src/pages/components/custom_btn_component.dart';
-//import 'package:prest_servico/src/views/create_account_view/create_account_view.dart';
+import 'package:ui_multicaixa/src/pages/create_account_view/create_account_view.dart';
 import 'package:ui_multicaixa/src/pages/login_view/login_view.dart';
 
 class IntroView extends StatefulWidget {
@@ -29,7 +29,7 @@ class _IntroViewState extends State<IntroView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Spacer(),
-          /*Hero(
+          Hero(
             tag: "logo",
             child: Image.asset(
               IMG_LOGO,
@@ -37,10 +37,10 @@ class _IntroViewState extends State<IntroView> {
               width: context.sizedDevice.width / 1.2,
               //fit: BoxFit.cover,
             ),
-          ),*/
+          ),
           SizedBox(height: 20,),
           Text(
-            "Prestação de Serviços",
+            "Bem-Vindo".toUpperCase(),
             style: TextStyle(
               fontFamily: FONT_NORMAL,
               fontWeight: FontWeight.bold,
@@ -61,7 +61,7 @@ class _IntroViewState extends State<IntroView> {
           SizedBox(height: 10,),
           CustomBtnComponent(
             text: "Criar Conta",
-            //onPressed: () => GoTo.page(context, page: CreateAccountView()),
+            onPressed: () => GoTo.page(context, page: CreateAccountView()),
           ),
           SizedBox(height: 10,),
           
@@ -72,7 +72,8 @@ class _IntroViewState extends State<IntroView> {
 
           Spacer(),
           Text(
-            "WWW.LIGHTSYSTEMS.CO.AO",
+            "WWW.LIGHTSYSTEMS.CO.AO\n${ DateTime.now().day }/0${ DateTime.now().month }/${ DateTime.now().year }",
+            textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.black54,
               fontFamily: FONT_NORMAL,

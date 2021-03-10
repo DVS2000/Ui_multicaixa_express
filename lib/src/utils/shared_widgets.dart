@@ -942,9 +942,18 @@ class SharedWidget {
               width: 40,
               margin: EdgeInsets.all(5.0),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  image: DecorationImage(
-                      image: AssetImage(transacao.img), fit: BoxFit.cover)),
+                color: COLOR_STANDARD,
+                shape: BoxShape.circle,
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                transacao.entidade.substring(0,1),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22
+                ),
+              ),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -1094,20 +1103,35 @@ class SharedWidget {
               height: 50,
               width: 50,
               decoration: BoxDecoration(
-                  color: colorMain,
+                  color: colorMain.withOpacity(.2),
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: colorMain, style: BorderStyle.solid, width: .5),
-                  image: DecorationImage(
-                      image: AssetImage(img), fit: BoxFit.cover)),
+                    color: colorMain, 
+                    style: BorderStyle.solid, 
+                    width: .5
+                  ),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                nome.split(' ').first.substring(0,1) + nome.split(' ').last.substring(0,1), 
+                style: TextStyle(
+                  fontFamily: FONT_NORMAL,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: colorMain
+                ),
+              ),
             ),
             SizedBox(
               height: 10,
             ),
-            Text(
-              nome,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontFamily: FONT_NORMAL, color: Colors.grey),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Text(
+                nome,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontFamily: FONT_NORMAL, color: Colors.grey),
+              ),
             )
           ],
         ),

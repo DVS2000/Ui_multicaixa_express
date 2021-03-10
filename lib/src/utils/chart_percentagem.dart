@@ -3,6 +3,7 @@ import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ui_multicaixa/src/utils/consts.dart';
 
+// ignore: must_be_immutable
 class ChartPercetagem extends StatefulWidget {
   double value;
   Color color;
@@ -38,8 +39,7 @@ class _ChartPercetagemState extends State<ChartPercetagem> {
           child: AnimatedCircularChart(
             key: chartKey2,
             size: charSize,
-            initialChartData:
-                generateChartData(100, widget.color.withOpacity(.1)),
+            initialChartData: generateChartData(100, widget.color.withOpacity(.1)),
             chartType: CircularChartType.Radial,
             edgeStyle: SegmentEdgeStyle.round,
             percentageValues: true,
@@ -72,7 +72,7 @@ class _ChartPercetagemState extends State<ChartPercetagem> {
             ),
             Center(
               child: Text(
-                "Seu gasto".toUpperCase(),
+                "SALDO ATUAL".toUpperCase(),
                 style: TextStyle(
                     fontFamily: FONT_MULTI, color: Colors.grey, fontSize: 14),
               ),
@@ -94,15 +94,7 @@ class _ChartPercetagemState extends State<ChartPercetagem> {
             SizedBox(
               height: 10,
             ),
-            Center(
-              child: Text(
-                widget.value.toInt().toString() + "%",
-                style: TextStyle(
-                    fontFamily: FONT_MULTI,
-                    color: Colors.grey,
-                    fontSize: 14),
-              ),
-            ),
+            
           ],
         )
       ],

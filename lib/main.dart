@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ui_multicaixa/src/pages/home-page.dart';
 import 'package:ui_multicaixa/src/pages/intro_view/intro_view.dart';
-import 'package:ui_multicaixa/src/pages/splash-page.dart';
+import 'package:ui_multicaixa/src/services/locator_service.dart';
 import 'package:ui_multicaixa/src/utils/consts.dart';
+import 'package:ui_multicaixa/src/utils/status_bar_color_util.dart';
 
 void main() {
-  SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.light
-    ),
-  );
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  /* AQUI ESTOU A DEFINIR UMA ÚNICA 
+  DIRECÇÃO QUE A APLICAÇÃO VAI RODAR 
+  NESSE CASO NA VERTICAL NUNCA NA 
+  HORIZONTAL 
+  */
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.portraitUp
+  ]);
+
+  setStatusBarDark();
+  setupLocator();
+  
   runApp(MyApp());
 }
 
@@ -25,7 +36,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light().copyWith(
         primaryColor: PRIMARY_COLOR
       ),
-      home: IntroView(),
+      home: HomePage(),
     );
   }
 }

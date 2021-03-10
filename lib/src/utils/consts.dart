@@ -14,7 +14,7 @@ const Color_KEVE            = Color(0xffF18900);
 const Color COLOR_BFA       = Color(0xffC64C0E);
 const Color COLOR_STANDARD  = Color(0xff00346E);
 const Color COLOR_ATLANTICO = Color(0xff0799C0);
-const Color PRIMARY_COLOR   = Color(0xff0047CC);
+const Color PRIMARY_COLOR   = Color(0xffC64C0E);
 const Color BACKGROUND      = Color(0xffF8F9F9);
 Color colorMain = Color(0xff0047CC);
 
@@ -63,6 +63,11 @@ const String ENERGIA    = "assets/energia.png";
 const String AGUA       = "assets/agua.png";
 const String INTERNET   = "assets/internet.png";
 const String OUTROS     = "assets/outros.png";
+const String IMG_LOGO   = "assets/logo_1.png";
+
+String code;
+
+const String URL_BASE_API = "https://luanda2021.herokuapp.com/api/v1/";
 
 
 

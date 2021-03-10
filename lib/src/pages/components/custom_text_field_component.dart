@@ -15,6 +15,7 @@ class CustomTextFieldComponent extends StatelessWidget {
   final TextInputType textInputType;
   final bool obscureText;
   final bool isExpanded;
+  final FocusNode focusNode;
 
   CustomTextFieldComponent({
     this.icon, 
@@ -25,7 +26,8 @@ class CustomTextFieldComponent extends StatelessWidget {
     this.controller,
     this.textInputType,
     this.obscureText = false,
-    this.isExpanded = false
+    this.isExpanded = false,
+    this.focusNode
   });
 
   @override
@@ -67,6 +69,7 @@ class CustomTextFieldComponent extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.only(left: !showIcon ? 8.0 : 0),
               child: TextField(
+                focusNode: focusNode,
                 controller: controller,
                 keyboardType: textInputType,
                 obscureText: obscureText,

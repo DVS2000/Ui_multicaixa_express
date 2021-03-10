@@ -69,6 +69,7 @@ String code;
 
 const String URL_BASE_API = "https://luanda2021.herokuapp.com/api/v1/";
 
+String idUserFrom;
 
 
 class Transacoes {

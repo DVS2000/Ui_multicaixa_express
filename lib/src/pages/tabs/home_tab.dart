@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:ui_multicaixa/src/controllers/saldo_controller/saldo_controller.dart';
+import 'package:ui_multicaixa/src/controllers/transferencia_controller/transferencia_controller.dart';
+import 'package:ui_multicaixa/src/controllers/user_controller/user_controller.dart';
 import 'package:ui_multicaixa/src/services/locator_service.dart';
 import 'package:ui_multicaixa/src/utils/chart_percentagem.dart';
-import 'package:ui_multicaixa/src/utils/function_global.dart';
 import 'package:ui_multicaixa/src/utils/shared_widgets.dart';
+import 'package:ui_multicaixa/src/utils/status_bar_color_util.dart';
 import '../../utils/consts.dart';
 
 class HomeTab extends StatefulWidget {
@@ -14,6 +16,8 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   final saldoController = locator.get<SaldoController>();
+  final userController = locator.get<UserController>();
+  final transferenciaController = locator.get<TransferenciaController>();
 
   int index = 0;
   void onChanged(int index) {
@@ -22,18 +26,15 @@ class _HomeTabState extends State<HomeTab> {
     });
   }
 
-  int _indexTab = 0;
-  void onTap(int index) {
-    setState(() {
-      _indexTab = index;
-    });
-  }
-
   @override
-  void initState() { 
+  void initState() {
+    setStatusBarLight();
     saldoController.get();
+    userController.getData();
+    userController.getAllUsers();
+    transferenciaController.get();
+
     super.initState();
-    
   }
 
   @override
@@ -64,13 +65,17 @@ class _HomeTabState extends State<HomeTab> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          "Dorivaldo dos Santos",
-                          style: TextStyle(
-                              fontFamily: FONT_NORMAL,
-                              color: Colors.white,
-                              fontSize: 18),
-                        ),
+                        Observer(builder: (_) {
+                          return userController.isLoading
+                              ? SizedBox()
+                              : Text(
+                                  "${userController.user.objetoUser.firstName ?? ""} ${userController.user.objetoUser.secondName ?? ""}",
+                                  style: TextStyle(
+                                      fontFamily: FONT_NORMAL,
+                                      color: Colors.white,
+                                      fontSize: 18),
+                                );
+                        }),
                         Icon(
                           Icons.notifications,
                           color: Colors.white,
@@ -97,20 +102,22 @@ class _HomeTabState extends State<HomeTab> {
                       ]),
                   child: Column(
                     children: <Widget>[
-                      Observer(
-                      builder: (_) {
+                      Observer(builder: (_) {
                         return Expanded(
-                          child: saldoController.isLoading
-                          ? Center(
-                            child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(colorMain),
-                            ),
-                          )
-                          : ChartPercetagem(
-                          color: colorMain,
-                          value: 60,
-                          money: saldoController?.model?.data?.valor.toString(),
-                        ));
+                            child: saldoController.isLoading
+                                ? Center(
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          colorMain),
+                                    ),
+                                  )
+                                : ChartPercetagem(
+                                    color: colorMain,
+                                    value: 60,
+                                    money: saldoController?.model?.data?.valor
+                                        .toString()
+                                        .replaceAll('.', ','),
+                                  ));
                       }),
                     ],
                   ),
@@ -136,17 +143,21 @@ class _HomeTabState extends State<HomeTab> {
               height: 10,
             ),
             Center(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                children: trancoes1
-                    .map((item) => SharedWidget.itemTransaction(
-                      size: size, transacao: item
-                      )
+              child: Observer(
+              builder: (_) {
+                return transferenciaController.isLoading
+                ? CircularProgressIndicator()
+                : ListView(
+                  padding: EdgeInsets.zero,
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  children: transferenciaController.model.data.reversed.map((model) => SharedWidget.itemTransaction(
+                      size: size, 
+                      model: model
                     )
-                    .toList(),
-              ),
+                  ).toList(),
+                );
+              }),
             )
           ],
         )

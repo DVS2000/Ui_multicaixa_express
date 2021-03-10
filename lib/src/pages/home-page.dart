@@ -128,8 +128,8 @@ class _HomePageState extends State<HomePage> {
                               onTap: () => _pageController.animateToPage(1,
                                   duration: Duration(milliseconds: 250),
                                   curve: Curves.easeIn),
-                              text: "Carteira".toUpperCase(),
-                              icon: FontAwesomeIcons.solidCreditCard,
+                              text: "Transferir".toUpperCase(),
+                              icon: FontAwesomeIcons.moneyBill,
                               sizeIcon: 28,
                               color: index == 1 ? color() : Colors.grey),
 

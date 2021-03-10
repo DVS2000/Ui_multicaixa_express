@@ -1,61 +1,59 @@
 
-class SaldoModel {
-    SaldoModel({
+class TransferenciaModel {
+    TransferenciaModel({
         this.data,
         this.message,
     });
 
-    Data data;
+    List<ObjetoTransferencia> data;
     String message;
 
-    factory SaldoModel.fromJson(Map<String, dynamic> json) => SaldoModel(
-        data: Data.fromJson(json["data"]),
+    factory TransferenciaModel.fromJson(Map<String, dynamic> json) => TransferenciaModel(
+        data: List<ObjetoTransferencia>.from(json["data"].map((x) => ObjetoTransferencia.fromJson(x))),
         message: json["message"],
     );
-
-    Map<String, dynamic> toJson() => {
-        "data": data.toJson(),
-        "message": message,
-    };
 }
 
-class Data {
-    Data({
+class ObjetoTransferencia {
+    ObjetoTransferencia({
         this.id,
+        this.idUserFrom,
+        this.idUserTo,
         this.valor,
-        this.idUser,
         this.createdAt,
         this.updatedAt,
-        this.dataIdUser,
-        this.user,
+        this.datumIdUserFrom,
+        this.datumIdUserTo,
+        this.from,
+        this.to,
     });
 
     int id;
+    int idUserFrom;
+    int idUserTo;
     String valor;
-    int idUser;
     DateTime createdAt;
     DateTime updatedAt;
-    int dataIdUser;
-    User user;
+    int datumIdUserFrom;
+    int datumIdUserTo;
+    User from;
+    User to;
 
-    factory Data.fromJson(Map<String, dynamic> json) => Data(
+    factory ObjetoTransferencia.fromJson(Map<String, dynamic> json) => ObjetoTransferencia(
         id: json["id"],
+        idUserFrom: json["idUserFrom"],
+        idUserTo: json["idUserTo"],
         valor: json["valor"],
-        idUser: json["idUser"],
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
-        dataIdUser: json["id_user"],
-        user: User.fromJson(json["user"]),
+        from: User.fromJson(json["from"]),
+        to: User.fromJson(json["to"]),
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
+        "idUserFrom": idUserFrom,
+        "idUserTo": idUserTo,
         "valor": valor,
-        "idUser": idUser,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "id_user": dataIdUser,
-        "user": user.toJson(),
     };
 }
 
@@ -122,3 +120,4 @@ class User {
         "updatedAt": updatedAt.toIso8601String(),
     };
 }
+

@@ -1,6 +1,8 @@
 import 'package:mobx/mobx.dart';
 import 'package:ui_multicaixa/src/models/user_model.dart';
+import 'package:ui_multicaixa/src/models/users_model.dart';
 import 'package:ui_multicaixa/src/repository/user_repository.dart';
+import 'package:ui_multicaixa/src/utils/consts.dart';
 part 'user_controller.g.dart';
 
 class UserController = _UserControllerBase with _$UserController;
@@ -16,6 +18,28 @@ abstract class _UserControllerBase with Store {
   @observable
   UserModel user = UserModel();
 
+  @observable
+  UsersModel users = UsersModel();
+
+
+  Future<void> getAllUsers() async {
+    if(users.data == null) {
+      isLoading = true;
+    }
+
+    final data = await repository.getAllUser();
+
+    if(data != null) {
+      isLoading = false;
+      users = data;
+    } else {
+      users = UsersModel(
+        data: null,
+        message: "Ocorreu um erro interno tente mais tarde."
+      );
+    }
+  }
+
   Future<void> getData() async {
     if (user.objetoUser == null) {
       isLoading = true;
@@ -29,6 +53,8 @@ abstract class _UserControllerBase with Store {
       if (data != user) {
         user = data;
       }
+
+      idUserFrom = data.objetoUser.id.toString();
     } else {
       isLoading = false;
 

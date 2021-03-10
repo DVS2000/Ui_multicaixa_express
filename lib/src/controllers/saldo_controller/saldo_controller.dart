@@ -18,7 +18,9 @@ abstract class _SaldoControllerBase with Store {
   SaldoModel model = SaldoModel();
 
   Future<void> get() async {
-    isLoading = true;
+    if(model == null) {
+      isLoading = true;
+    }
 
     final data = await repository.get();
 

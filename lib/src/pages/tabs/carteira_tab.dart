@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:ui_multicaixa/src/controllers/transferencia_controller/transferencia_controller.dart';
+import 'package:ui_multicaixa/src/controllers/user_controller/user_controller.dart';
+import 'package:ui_multicaixa/src/models/transferencia_model.dart';
+import 'package:ui_multicaixa/src/services/locator_service.dart';
 import 'package:ui_multicaixa/src/utils/consts.dart';
 import 'package:ui_multicaixa/src/utils/shared_widgets.dart';
 
@@ -11,14 +15,31 @@ class CarteiraTab extends StatefulWidget {
 }
 
 class _CarteiraTabState extends State<CarteiraTab> {
-  PageController _pageController;
+  // PageController _pageController;
+
+  final usersController = locator.get<UserController>();
+  final transferenciaController = locator.get<TransferenciaController>();
+
+  String idUserTO;
+  String valor;
 
   @override
   void initState() {
-    _pageController = PageController(
-        viewportFraction: 0.92, initialPage: StringGlobal.initPage);
+    //_pageController = PageController(viewportFraction: 0.92, initialPage: StringGlobal.initPage);
     super.initState();
   }
+
+  int index = -1;
+  int indexUsers = -1;
+
+  List<Valores> valores = [
+    Valores(descricao: "2.000 kzs", valor: "2000"),
+    Valores(descricao: "4.000 kzs", valor: "4000"),
+    Valores(descricao: "10.000 kzs", valor: "10000"),
+    Valores(descricao: "15.000 kzs", valor: "15000"),
+    Valores(descricao: "25.000 kzs", valor: "25000"),
+    Valores(descricao: "30.000 kzs", valor: "30000"),
+  ];
 
   String getBank() {
     if (_index == 0 || StringGlobal.initPage == 0) {
@@ -66,13 +87,13 @@ class _CarteiraTabState extends State<CarteiraTab> {
         SizedBox(
           height: 35,
         ),
-        Padding(
+        /*Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                getBank(),
+                "Carteira",
                 style: TextStyle(
                     fontFamily: FONT_BOLD, color: Colors.black, fontSize: 18),
               ),
@@ -82,8 +103,8 @@ class _CarteiraTabState extends State<CarteiraTab> {
               )
             ],
           ),
-        ),
-        Container(
+        ),*/
+        /* Container(
           height: size.height / 3,
           width: size.width,
           child: PageView(
@@ -147,8 +168,8 @@ class _CarteiraTabState extends State<CarteiraTab> {
               ),
             ],
           ),
-        ),
-        SizedBox(
+        ),*/
+        /*SizedBox(
           height: 10,
         ),
         Padding(
@@ -262,8 +283,8 @@ class _CarteiraTabState extends State<CarteiraTab> {
               )
             ],
           ),
-        ),
-        Padding(
+        ),*/
+        /* Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Divider(),
         ),
@@ -288,30 +309,184 @@ class _CarteiraTabState extends State<CarteiraTab> {
         ),
         SizedBox(
           height: 10,
-        ),
+        ),*/
         Padding(
           padding: const EdgeInsets.only(left: 20, bottom: 5, top: 10),
           child: Text(
-            "Enviar Dinheiro Para:",
+            "Enviar dinheiro para:",
             style: TextStyle(fontFamily: FONT_BOLD, fontSize: 18),
           ),
         ),
         Container(
           height: 130,
           width: size.width,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.only(left: 20, bottom: 15.0, top: 5, right: 10),
-            children: <Widget>[
-              //SharedWidget.addContact(),
-              SharedWidget.contactItem(nome: "Anísio Gomes", img: ANISIO),
-              SharedWidget.contactItem(nome: "José Manuel", img: MOSTRINHO),
-              SharedWidget.contactItem(nome: "Josefá Monteiro", img: JOSEFA),
-              SharedWidget.contactItem(nome: "José Lukamba", img: LUKAMBA),
-            ],
+          child: Observer(builder: (_) {
+            return usersController.isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.only(
+                        left: 5, bottom: 15.0, top: 5, right: 10),
+                    children: usersController.users.data.map((user) {
+                      return SharedWidget.contactItem(
+                          onTap: () {
+                            idUserTO = user.id.toString();
+                            setState(() {
+                              this.indexUsers =
+                                  usersController.users.data.indexOf(user);
+                            });
+                          },
+                          enable: this.indexUsers ==
+                              usersController.users.data.indexOf(user),
+                          nome: "${user.firstName} ${user.secondName}" ?? "");
+                    }).toList(),
+                  );
+          }),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Divider(),
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 15),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.grey.withOpacity(.2),
+                    blurRadius: 10,
+                    offset: Offset(0.0, 5.0))
+              ]),
+          child: TextField(
+            style: TextStyle(fontFamily: FONT_MULTI),
+            textAlign: TextAlign.center,
+            keyboardType: TextInputType.number,
+            onChanged: (value) => setState(() => valor = value),
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: "INSERIR O VALOR PRETENDIDO",
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 10, vertical: 5)),
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Divider(),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SelectableText(
+              "Seleccione o valor que deseja ENVIAR".toUpperCase(),
+              style: TextStyle(
+                fontFamily: FONT_MULTI,
+              ),
+            )
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Divider(),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        GridView.count(
+          padding: EdgeInsets.only(right: 15),
+          shrinkWrap: true,
+          crossAxisCount: 2,
+          childAspectRatio: 2.5,
+          children: valores
+              .map((value) => GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        this.index = valores.indexOf(value);
+                        valor = value.valor;
+                      });
+                    },
+                    child: AnimatedContainer(
+                        duration: Duration(milliseconds: 150),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        margin: EdgeInsets.only(bottom: 15, left: 15),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(
+                                width: 1,
+                                color: index == valores.indexOf(value)
+                                    ? COLOR_STANDARD
+                                    : Colors.white),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.grey.withOpacity(.2),
+                                  blurRadius: 10,
+                                  offset: Offset(0.0, 5.0))
+                            ]),
+                        alignment: Alignment.center,
+                        child: Text(
+                          value.descricao,
+                          style: TextStyle(
+                              fontFamily: FONT_MULTI,
+                              color: COLOR_STANDARD,
+                              fontSize: 16),
+                        )),
+                  ))
+              .toList(),
+        ),
+        Observer(
+          builder: (_) {
+          return transferenciaController.isLoading
+          ? Center(
+            child: CircularProgressIndicator(),
+          ) : GestureDetector(
+            onTap: () async {
+              transferenciaController.store(model: ObjetoTransferencia(
+                idUserFrom: int.parse(idUserFrom),
+                idUserTo: int.parse(idUserTO),
+                valor: valor
+              )).then((res) {
+                showDialog(context: context, builder: (context) {
+                  return Dialog(
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Text(res.message),
+                    ),
+                  );
+                });
+              });
+            },
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 17),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                BoxShadow(
+                    color: Colors.grey.withOpacity(.2),
+                    blurRadius: 10,
+                    offset: Offset(0.0, 5.0))
+              ]),
+              alignment: Alignment.center,
+              child: Text(
+                "Transferir".toUpperCase(),
+                style: TextStyle(
+                    color: COLOR_STANDARD,
+                    fontFamily: FONT_NORMAL,
+                    fontSize: 16),
+              ),
+            ),
+          );
+        })
       ],
     );
   }
+}
+
+class Valores {
+  String descricao;
+  String valor;
+
+  Valores({this.descricao, this.valor});
 }

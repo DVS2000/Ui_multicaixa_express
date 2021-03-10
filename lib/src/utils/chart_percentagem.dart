@@ -70,7 +70,7 @@ class _ChartPercetagemState extends State<ChartPercetagem> {
             ),
             Center(
               child: Text(
-                widget.money + ",00 AOA",
+                widget.money + " AOA",
                 style: TextStyle(
                     fontFamily: FONT_MULTI,
                     fontWeight: FontWeight.bold,

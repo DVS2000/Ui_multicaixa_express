@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ui_multicaixa/src/models/transferencia_model.dart';
 import 'package:ui_multicaixa/src/utils/consts.dart';
+import 'package:ui_multicaixa/src/utils/format_data_util.dart';
 
 class SharedWidget {
   SharedWidget(_);
@@ -922,7 +924,7 @@ class SharedWidget {
       );
 
   static Widget itemTransaction(
-          {@required Size size, @required Transacoes transacao}) =>
+          {@required Size size, @required ObjetoTransferencia model}) =>
       Container(
         height: 50,
         width: size.width,
@@ -947,11 +949,10 @@ class SharedWidget {
               ),
               alignment: Alignment.center,
               child: Text(
-                transacao.entidade.substring(0,1),
+                "${model.to.firstName.substring(0,1)}${model.to.secondName.substring(0,1)}",
                 style: TextStyle(
                   color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22
+                  fontSize: 20
                 ),
               ),
             ),
@@ -960,11 +961,11 @@ class SharedWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  transacao.entidade,
+                  "${model.to.firstName ?? ""} ${model.to.secondName ?? ""}",
                   style: TextStyle(fontFamily: FONT_NORMAL, fontSize: 18),
                 ),
                 Text(
-                  transacao.data,
+                  formateDate(model.createdAt),
                   style: TextStyle(
                       fontFamily: FONT_NORMAL,
                       fontSize: 12,
@@ -974,7 +975,7 @@ class SharedWidget {
             ),
             Spacer(),
             Text(
-              transacao.valor,
+              "- ${model?.valor?.replaceAll('.', ',')} AOA",
               style: TextStyle(fontFamily: FONT_NORMAL, fontSize: 10),
             ),
             SizedBox(
@@ -988,62 +989,66 @@ class SharedWidget {
           {@required Size size,
           IconData icon,
           String title,
+          Function onTap,
           String description}) =>
-      Container(
-        height: 55,
-        width: size.width,
-        margin: EdgeInsets.only(bottom: 15),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(5),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.grey.withOpacity(.3),
-                  blurRadius: 14,
-                  offset: Offset(0.0, 5.0))
-            ]),
-        child: Row(
-          children: <Widget>[
-            Container(
-              width: 45,
-              margin: EdgeInsets.all(5.0),
-              decoration: BoxDecoration(
-                color: colorMain.withOpacity(.2),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Center(
-                child: Icon(
-                  icon,
-                  color: colorMain,
+      GestureDetector(
+        onTap: onTap,
+        child: Container(
+          height: 55,
+          width: size.width,
+          margin: EdgeInsets.only(bottom: 15),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.grey.withOpacity(.3),
+                    blurRadius: 14,
+                    offset: Offset(0.0, 5.0))
+              ]),
+          child: Row(
+            children: <Widget>[
+              Container(
+                width: 45,
+                margin: EdgeInsets.all(5.0),
+                decoration: BoxDecoration(
+                  color: colorMain.withOpacity(.2),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Center(
+                  child: Icon(
+                    icon,
+                    color: colorMain,
+                  ),
                 ),
               ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  title,
-                  style: TextStyle(fontFamily: FONT_NORMAL, fontSize: 18),
-                ),
-                Text(
-                  description,
-                  style: TextStyle(
-                      fontFamily: FONT_NORMAL,
-                      fontSize: 12,
-                      color: Colors.grey),
-                )
-              ],
-            ),
-            Spacer(),
-            Icon(
-              Icons.chevron_right,
-              color: Colors.grey,
-            ),
-            SizedBox(
-              width: 5,
-            )
-          ],
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    title,
+                    style: TextStyle(fontFamily: FONT_NORMAL, fontSize: 18),
+                  ),
+                  Text(
+                    description,
+                    style: TextStyle(
+                        fontFamily: FONT_NORMAL,
+                        fontSize: 12,
+                        color: Colors.grey),
+                  )
+                ],
+              ),
+              Spacer(),
+              Icon(
+                Icons.chevron_right,
+                color: Colors.grey,
+              ),
+              SizedBox(
+                width: 5,
+              )
+            ],
+          ),
         ),
       );
 
@@ -1082,60 +1087,69 @@ class SharedWidget {
         ),
       );
 
-  static Widget contactItem({String nome, String img}) => Container(
-        width: 80,
-        height: 120,
-        margin: EdgeInsets.only(left: 15),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(5),
-            boxShadow: [
-              BoxShadow(
+  static Widget contactItem({String nome, String img, Function onTap, bool enable = false}) => GestureDetector(
+    onTap: onTap,
+    child: Container(
+          width: 80,
+          height: 120,
+          margin: EdgeInsets.only(left: 15),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(
+                color: enable ? colorMain :  Colors.white, 
+                style: BorderStyle.solid, 
+                width: .5
+              ),
+              boxShadow: [    
+                BoxShadow(
                   color: Colors.grey.withOpacity(.2),
                   blurRadius: 10,
-                  offset: Offset(0.0, 5.0))
-            ]),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            AnimatedContainer(
-              duration: Duration(milliseconds: 250),
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                  color: colorMain.withOpacity(.2),
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: colorMain, 
-                    style: BorderStyle.solid, 
-                    width: .5
+                  offset: Offset(0.0, 5.0)
+                )
+              ]),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              AnimatedContainer(
+                duration: Duration(milliseconds: 250),
+                height: 50,
+                width: 50,
+                decoration: BoxDecoration(
+                    color: colorMain.withOpacity(.2),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: colorMain, 
+                      style: BorderStyle.solid, 
+                      width: .5
+                    ),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  nome.split(' ').first.substring(0,1) + nome.split(' ').last.substring(0,1), 
+                  style: TextStyle(
+                    fontFamily: FONT_NORMAL,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: colorMain
                   ),
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                nome.split(' ').first.substring(0,1) + nome.split(' ').last.substring(0,1), 
-                style: TextStyle(
-                  fontFamily: FONT_NORMAL,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: colorMain
                 ),
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: Text(
-                nome,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontFamily: FONT_NORMAL, color: Colors.grey),
+              SizedBox(
+                height: 10,
               ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Text(
+                  nome,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontFamily: FONT_NORMAL, color: Colors.grey),
+                ),
+              )
+            ],
+          ),
         ),
-      );
+  );
 
   static Widget itemPagamento({String text, String img}) => Container(
         height: 65,

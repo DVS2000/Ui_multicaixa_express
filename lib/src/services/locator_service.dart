@@ -11,11 +11,13 @@ import 'package:ui_multicaixa/src/controllers/activate_account_controller/activa
 import 'package:ui_multicaixa/src/controllers/create_account_controller/create_account_controller.dart';
 import 'package:ui_multicaixa/src/controllers/login_controller/login_controller.dart';
 import 'package:ui_multicaixa/src/controllers/saldo_controller/saldo_controller.dart';
+import 'package:ui_multicaixa/src/controllers/transferencia_controller/transferencia_controller.dart';
 import 'package:ui_multicaixa/src/controllers/user_controller/user_controller.dart';
 import 'package:ui_multicaixa/src/repository/ative_account_repository.dart';
 import 'package:ui_multicaixa/src/repository/create_accout_repository.dart';
 import 'package:ui_multicaixa/src/repository/login_repository.dart';
 import 'package:ui_multicaixa/src/repository/saldo_repository.dart';
+import 'package:ui_multicaixa/src/repository/transferencia_repository.dart';
 import 'package:ui_multicaixa/src/repository/user_repository.dart';
 import 'package:ui_multicaixa/src/services/client_http_service.dart';
 
@@ -57,6 +59,14 @@ void setupLocator() {
   locator.registerSingleton(
     SaldoController(
       repository: SaldoRepository(
+        client: ClientHttpService()
+      )
+    )
+  );
+
+  locator.registerSingleton(
+    TransferenciaController(
+      repository: TransferenciaRepository(
         client: ClientHttpService()
       )
     )

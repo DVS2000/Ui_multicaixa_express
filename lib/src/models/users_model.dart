@@ -1,66 +1,25 @@
-
-class SaldoModel {
-    SaldoModel({
+class UsersModel {
+    UsersModel({
         this.data,
         this.message,
     });
 
-    Data data;
+    List<Datum> data;
     String message;
 
-    factory SaldoModel.fromJson(Map<String, dynamic> json) => SaldoModel(
-        data: Data.fromJson(json["data"]),
+    factory UsersModel.fromJson(Map<String, dynamic> json) => UsersModel(
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
         message: json["message"],
     );
 
     Map<String, dynamic> toJson() => {
-        "data": data.toJson(),
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
         "message": message,
     };
 }
 
-class Data {
-    Data({
-        this.id,
-        this.valor,
-        this.idUser,
-        this.createdAt,
-        this.updatedAt,
-        this.dataIdUser,
-        this.user,
-    });
-
-    int id;
-    String valor;
-    int idUser;
-    DateTime createdAt;
-    DateTime updatedAt;
-    int dataIdUser;
-    User user;
-
-    factory Data.fromJson(Map<String, dynamic> json) => Data(
-        id: json["id"],
-        valor: json["valor"],
-        idUser: json["idUser"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        dataIdUser: json["id_user"],
-        user: User.fromJson(json["user"]),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "valor": valor,
-        "idUser": idUser,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "id_user": dataIdUser,
-        "user": user.toJson(),
-    };
-}
-
-class User {
-    User({
+class Datum {
+    Datum({
         this.id,
         this.firstName,
         this.secondName,
@@ -74,6 +33,7 @@ class User {
         this.tipoId,
         this.createdAt,
         this.updatedAt,
+        this.tipo,
     });
 
     int id;
@@ -89,8 +49,9 @@ class User {
     int tipoId;
     DateTime createdAt;
     DateTime updatedAt;
+    Tipo tipo;
 
-    factory User.fromJson(Map<String, dynamic> json) => User(
+    factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
         firstName: json["firstName"],
         secondName: json["secondName"],
@@ -104,6 +65,7 @@ class User {
         tipoId: json["tipoId"],
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
+        tipo: Tipo.fromJson(json["tipo"]),
     );
 
     Map<String, dynamic> toJson() => {
@@ -118,6 +80,35 @@ class User {
         "isComplete": isComplete,
         "password": password,
         "tipoId": tipoId,
+        "createdAt": createdAt.toIso8601String(),
+        "updatedAt": updatedAt.toIso8601String(),
+        "tipo": tipo.toJson(),
+    };
+}
+
+class Tipo {
+    Tipo({
+        this.id,
+        this.descricao,
+        this.createdAt,
+        this.updatedAt,
+    });
+
+    int id;
+    String descricao;
+    DateTime createdAt;
+    DateTime updatedAt;
+
+    factory Tipo.fromJson(Map<String, dynamic> json) => Tipo(
+        id: json["id"],
+        descricao: json["descricao"],
+        createdAt: DateTime.parse(json["createdAt"]),
+        updatedAt: DateTime.parse(json["updatedAt"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "descricao": descricao,
         "createdAt": createdAt.toIso8601String(),
         "updatedAt": updatedAt.toIso8601String(),
     };

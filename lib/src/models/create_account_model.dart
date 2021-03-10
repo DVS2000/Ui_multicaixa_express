@@ -74,7 +74,6 @@ class DataUser {
     "phone": phone,
     "email": email,
     "password": password,
-    "passwordHash": passwordHash,
     "tipoId": tipoId,
     "code": code,
     "updatedAt": updatedAt,

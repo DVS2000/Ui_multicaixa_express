@@ -109,7 +109,7 @@ class _HomeTabState extends State<HomeTab> {
                           : ChartPercetagem(
                           color: colorMain,
                           value: 60,
-                          money: saldoController?.model?.saldo?.valor.toString(),
+                          money: saldoController?.model?.data?.valor.toString(),
                         ));
                       }),
                     ],

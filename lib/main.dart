@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light().copyWith(
         primaryColor: PRIMARY_COLOR
       ),
-      home: IntroView(),
+      home: HomePage(),
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ui_multicaixa/src/utils/consts.dart';
 
@@ -14,47 +13,36 @@ class ChartPercetagem extends StatefulWidget {
 }
 
 class _ChartPercetagemState extends State<ChartPercetagem> {
-  final GlobalKey<AnimatedCircularChartState> chartKey =
-      GlobalKey<AnimatedCircularChartState>();
-  final GlobalKey<AnimatedCircularChartState> chartKey2 =
-      GlobalKey<AnimatedCircularChartState>();
-  final charSize = const Size(300.0, 300.0);
-  Color labelColor = Colors.blue[200];
-
-  List<CircularStackEntry> generateChartData(double value, Color color) {
-    List<CircularStackEntry> data = <CircularStackEntry>[
-      new CircularStackEntry(<CircularSegmentEntry>[
-        new CircularSegmentEntry(value, color, rankKey: "percentage")
-      ], rankKey: "percentage")
-    ];
-
-    return data;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
+
         Center(
-          child: AnimatedCircularChart(
-            key: chartKey2,
-            size: charSize,
-            initialChartData: generateChartData(100, widget.color.withOpacity(.1)),
-            chartType: CircularChartType.Radial,
-            edgeStyle: SegmentEdgeStyle.round,
-            percentageValues: true,
-          ),
+          child: Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              border: Border.all(
+                width: 10,
+                color: COLOR_STANDARD
+              )
+            ),
+          )
         ),
         Center(
-          child: AnimatedCircularChart(
-            key: chartKey,
-            size: charSize,
-            initialChartData: generateChartData(widget.value, widget.color),
-            chartType: CircularChartType.Radial,
-            edgeStyle: SegmentEdgeStyle.round,
-            percentageValues: true,
-            startAngle: 90,
-          ),
+          child: Container(
+            margin: EdgeInsets.symmetric(vertical: 20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              border: Border.all(
+                width: 10,
+                color: COLOR_STANDARD.withOpacity(.2)
+              )
+            ),
+          )
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,

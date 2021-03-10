@@ -28,7 +28,7 @@ abstract class _SaldoControllerBase with Store {
     } else {
       isLoading = false;
       model = SaldoModel(
-        saldo: null,
+        data: null,
         message: "Ocorreu um erro interno, tente mais tarde."
       );
     }

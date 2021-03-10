@@ -10,7 +10,7 @@ class SaldoRepository {
 
   Future<SaldoModel> get() async {
     final response = await client.get(
-      route: "saldo",
+      route: "saldo/token",
       headers: await HttpHeaderService.headersWithToken()
     );
 

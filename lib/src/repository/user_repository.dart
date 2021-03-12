@@ -24,7 +24,14 @@ class UserRepository {
       headers: await HttpHeaderService.headersWithToken()
     );
 
-    return UsersModel.fromJson(json.decode(response.body));
+    if(response.statusCode == 200) {
+      return UsersModel.fromJson(json.decode(response.body));
+    } else {
+      return UsersModel(
+        data: null,
+        message: json.decode(response.body)["message"]
+      );
+    }
   }
 
   /// Função para pegar todos dados do `usuário`

@@ -54,7 +54,7 @@ abstract class _UserControllerBase with Store {
         user = data;
       }
 
-      idUserFrom = data.objetoUser.id.toString();
+      idUserFrom = data?.objetoUser?.id?.toString();
     } else {
       isLoading = false;
 

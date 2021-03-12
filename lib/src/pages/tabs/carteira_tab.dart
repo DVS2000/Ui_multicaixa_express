@@ -325,7 +325,18 @@ class _CarteiraTabState extends State<CarteiraTab> {
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
-                : ListView(
+                : usersController.users.data == null
+                ? Center(
+                  child: Text(
+                    usersController.users.message.toUpperCase(),
+                    style: TextStyle(
+                      fontFamily: FONT_NORMAL,
+                      color: COLOR_STANDARD,
+                      fontSize: 22
+                    ),
+                   )
+                  ) 
+                  : ListView(
                     scrollDirection: Axis.horizontal,
                     padding: EdgeInsets.only(
                         left: 5, bottom: 15.0, top: 5, right: 10),

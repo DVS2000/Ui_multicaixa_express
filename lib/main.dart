@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light().copyWith(
         primaryColor: PRIMARY_COLOR
       ),
-      home: token == "" || token == null ? IntroView() : HomePage(),
+      home: (token == "" || token == null) ? IntroView() : HomePage(),
     );
   }
 }

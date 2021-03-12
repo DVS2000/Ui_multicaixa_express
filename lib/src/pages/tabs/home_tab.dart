@@ -69,7 +69,7 @@ class _HomeTabState extends State<HomeTab> {
                           return userController.isLoading
                               ? SizedBox()
                               : Text(
-                                  "${userController.user.objetoUser.firstName ?? ""} ${userController.user.objetoUser.secondName ?? ""}",
+                                  "${userController?.user?.objetoUser?.firstName ?? ""} ${userController?.user?.objetoUser?.secondName ?? ""}",
                                   style: TextStyle(
                                       fontFamily: FONT_NORMAL,
                                       color: Colors.white,
@@ -100,10 +100,11 @@ class _HomeTabState extends State<HomeTab> {
                             blurRadius: 14,
                             offset: Offset(0.0, 5.0))
                       ]),
-                  child: Column(
-                    children: <Widget>[
-                      Observer(builder: (_) {
-                        return Expanded(
+                  child: Observer(
+                  builder: (_) {
+                    return Column(
+                      children: [
+                        Expanded(
                             child: saldoController.isLoading
                                 ? Center(
                                     child: CircularProgressIndicator(
@@ -117,10 +118,11 @@ class _HomeTabState extends State<HomeTab> {
                                     money: saldoController?.model?.data?.valor
                                         .toString()
                                         .replaceAll('.', ','),
-                                  ));
-                      }),
-                    ],
-                  ),
+                                  )
+                                ),
+                      ],
+                    );
+                  }),
                 ),
               ),
             ],
@@ -147,7 +149,18 @@ class _HomeTabState extends State<HomeTab> {
               builder: (_) {
                 return transferenciaController.isLoading
                 ? CircularProgressIndicator()
-                : ListView(
+                : transferenciaController?.model?.data == null ? 
+                Center(
+                  child: Text(
+                    transferenciaController?.model?.message?.toUpperCase(),
+                    style: TextStyle(
+                      fontFamily: FONT_NORMAL,
+                      color: COLOR_STANDARD,
+                      fontSize: 22
+                    ),
+                   )
+                  )
+                  : ListView(
                   padding: EdgeInsets.zero,
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,

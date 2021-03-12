@@ -15,7 +15,14 @@ class TransferenciaRepository {
       headers: await HttpHeaderService.headersWithToken()
     );
 
-    return TransferenciaModel.fromJson(json.decode(response.body));
+    if(response.statusCode == 200) {
+      return TransferenciaModel.fromJson(json.decode(response.body));
+    } else {
+      return TransferenciaModel(
+        data: null,
+        message: json.decode(response.body)["message"]
+      );
+    }
   }
 
   Future<TransferenciaResponse> store({ObjetoTransferencia model}) async {

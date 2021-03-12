@@ -39,7 +39,7 @@ class Data {
     User user;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
-        id: json["id"],
+        id: json["id"] ?? null, 
         valor: json["valor"],
         idUser: json["idUser"],
         createdAt: DateTime.parse(json["createdAt"]),

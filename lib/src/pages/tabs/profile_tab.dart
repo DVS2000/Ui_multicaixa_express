@@ -87,6 +87,17 @@ class _ProfileTabState extends State<ProfileTab> {
                   ),
                   child: userController.isLoading
                   ? Center(child: CircularProgressIndicator(),)
+                  : userController.user.objetoUser == null
+                  ? Center(
+                  child: Text(
+                    userController.users.message.toUpperCase(),
+                    style: TextStyle(
+                      fontFamily: FONT_NORMAL,
+                      color: COLOR_STANDARD,
+                      fontSize: 22
+                    ),
+                   )
+                  ) 
                   : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[

@@ -14,6 +14,13 @@ class SaldoRepository {
       headers: await HttpHeaderService.headersWithToken()
     );
 
-    return SaldoModel.fromJson(json.decode(response.body));
+    if(response.statusCode == 200) {
+      return SaldoModel.fromJson(json.decode(response.body));
+    } else {
+      return SaldoModel(
+        data: null,
+        message: json.decode(response.body)["message"]
+      );
+    }
   }
 }

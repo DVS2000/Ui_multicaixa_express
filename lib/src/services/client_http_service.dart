@@ -13,6 +13,7 @@ import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 import 'package:ui_multicaixa/src/interfaces/http_client_interface.dart';
 import 'package:ui_multicaixa/src/utils/consts.dart';
+import 'package:connectivity/connectivity.dart';
 
 class ClientHttpService implements IHttpClient {
   final _ioc = HttpClient();
@@ -26,25 +27,24 @@ class ClientHttpService implements IHttpClient {
   @override
   Future<Response> get({String route, Map<String, dynamic> headers}) async {
     try {
-      bool checkNetWork = await DataConnectionChecker().hasConnection;
+      var connResult = await(Connectivity().checkConnectivity());
 
-      if (checkNetWork) {
+      if (!(connResult == ConnectivityResult.none)) {
         return await _client.get(URL_BASE_API + route, headers: headers);
       } else {
         return Response("{\"data\": null, \"message\": \"Sem internet\"}", 511);
       }
     } catch (e) {
-      return Response(
-          "{\"data\": null, \"message\": \"Ocorreu um erro interno\"}", 500);
+      return Response("{\"data\": null, \"message\": \"Ocorreu um erro interno\"}", 500);
     }
   }
 
   @override
   Future<Response> post({String route, Map<String, dynamic> headers, dynamic body}) async {
     try {
-      bool checkNetWork = await DataConnectionChecker().hasConnection;
+      var connResult = await(Connectivity().checkConnectivity());
 
-      if (checkNetWork) {
+      if (!(connResult == ConnectivityResult.none)) {
         return await _client.post(
           URL_BASE_API + route,
           headers: headers, 
@@ -62,9 +62,9 @@ class ClientHttpService implements IHttpClient {
   @override
   Future<Response> put({String route, Map<String, dynamic> headers, dynamic body}) async {
     try {
-      bool checkNetWork = await DataConnectionChecker().hasConnection;
+      var connResult = await(Connectivity().checkConnectivity());
 
-      if (checkNetWork) {
+      if (!(connResult == ConnectivityResult.none)) {
         return await _client.put(
           URL_BASE_API + route,
           headers: headers, 
@@ -82,9 +82,9 @@ class ClientHttpService implements IHttpClient {
   @override
   Future<Response> delete({String route, Map<String, dynamic> headers, body}) async {
     try {
-      bool checkNetWork = await DataConnectionChecker().hasConnection;
+      var connResult = await(Connectivity().checkConnectivity());
 
-      if (checkNetWork) {
+      if (!(connResult == ConnectivityResult.none)) {
         return await _client.delete(
           URL_BASE_API + route, 
           headers: headers
